@@ -11,11 +11,11 @@ import httpx
 from typing import *
 
 
-async def hunt(as_client: httpx.AsyncClient, email_address: str, json_file: bool=None):
+async def hunt(as_client: httpx.AsyncClient, email_address: str, json_file: bool=None, credspath: str=None):
     if not as_client:
         as_client = get_httpx_client()
  
-    ghunt_creds = GHuntCreds()
+    ghunt_creds = GHuntCreds(creds_path=credspath)
     ghunt_creds.load_creds()
 
     if not ghunt_creds.are_creds_loaded():
