@@ -37,15 +37,15 @@ async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool=None)
     ghunt_creds.load_creds()
 
     if not ghunt_creds.are_creds_loaded():
-        exit("[-] Creds aren't loaded. Are you logged in ?")
+        print("[-] Creds aren't loaded. Are you logged in ?")
 
     if not auth.check_cookies(ghunt_creds.cookies):
-        exit("[-] Seems like the cookies are invalid. Exiting...")
+        print("[-] Seems like the cookies are invalid. Exiting...")
 
     drive = DriveHttp(ghunt_creds)
     file_found, file = await drive.get_file(as_client, file_id)
     if not file_found:
-        exit("[-] The file wasn't found.")
+        print("[-] The file wasn't found.")
 
     is_folder = file.mime_type == "application/vnd.google-apps.folder"
     file_type = drive_knownledge.mime_types.get(file.mime_type)

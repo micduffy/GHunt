@@ -21,7 +21,7 @@ async def check_and_login(as_client: httpx.AsyncClient, clean: bool=False) -> No
             print(f"[+] Credentials file at {creds_path} deleted !")
         else:
             print(f"Credentials file at {creds_path} doesn't exists, no need to delete.")
-        exit()
+        print()
 
     if not as_client:
         as_client = get_httpx_client()
@@ -60,7 +60,7 @@ async def check_and_login(as_client: httpx.AsyncClient, clean: bool=False) -> No
             cookies, oauth_token = await getting_cookies_dialog(wanted_cookies)
             new_cookies_entered = True
         elif not are_cookies_valid:
-            await exit("Please put valid cookies. Exiting...")
+            await print("Please put valid cookies. Exiting...")
 
     # Validate cookies
     if new_cookies_entered or not ghunt_creds.are_creds_loaded():
@@ -68,10 +68,10 @@ async def check_and_login(as_client: httpx.AsyncClient, clean: bool=False) -> No
         if are_cookies_valid:
             print("\n[+] The cookies seems valid !")
         else:
-            await exit("\n[-] Seems like the cookies are invalid, try regenerating them.")
+            await print("\n[-] Seems like the cookies are invalid, try regenerating them.")
     
     if not new_cookies_entered:
-        await exit()
+        await print()
 
     print(f"\n[+] Got OAuth2 token => {oauth_token}")
     master_token, services, owner_email, owner_name = await android_master_auth(as_client, oauth_token)

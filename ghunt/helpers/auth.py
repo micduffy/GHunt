@@ -154,6 +154,6 @@ async def getting_cookies_dialog(cookies: Dict[str, str]) -> Tuple[Dict[str, str
         oauth_token = input(f"oauth_token").strip().strip('"')
 
     else:
-        exit("Please choose a valid choice. Exiting...")
+        print("Please choose a valid choice. Exiting...")
 
     return cookies, oauth_token
