@@ -95,7 +95,7 @@ class GAPI(SmartObj):
                     "token": token,
                     "expiry": expiry_timestamp
                 }
-                creds.save_creds(silent=True)
+                # creds.save_creds(silent=True)
                 gb.rc.print(f"\n[+] New token for {self.api_name} has been generated", style="italic")
             return token
 
