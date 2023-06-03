@@ -19,10 +19,10 @@ async def hunt(as_client: httpx.AsyncClient, email_address: str, json_file: bool
     ghunt_creds.load_creds()
 
     if not ghunt_creds.are_creds_loaded():
-        exit("[-] Creds aren't loaded. Are you logged in ?")
+        print("[-] Creds aren't loaded. Are you logged in ?")
 
     if not auth.check_cookies(ghunt_creds.cookies):
-        exit("[-] Seems like the cookies are invalid. Exiting...")
+        print("[-] Seems like the cookies are invalid. Exiting...")
 
     #gb.rc.print("[+] Target found !", style="sea_green3")
 
@@ -30,7 +30,7 @@ async def hunt(as_client: httpx.AsyncClient, email_address: str, json_file: bool
     vision_api = VisionHttp(ghunt_creds)
     is_found, target = await people_pa.people_lookup(as_client, email_address, params_template="max_details")
     if not is_found:
-        exit("\n[-] The target wasn't found.")
+        print("\n[-] The target wasn't found.")
 
     if json_file:
         json_results = {}
@@ -43,7 +43,7 @@ async def hunt(as_client: httpx.AsyncClient, email_address: str, json_file: bool
             print(f"- {container.title()}")
 
     if not "PROFILE" in containers:
-        exit("[-] Given information does not match a public Google Account.")
+        print("[-] Given information does not match a public Google Account.")
 
     container = "PROFILE"
     
