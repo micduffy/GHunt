@@ -11,18 +11,11 @@ import httpx
 from typing import *
 
 
-async def hunt(as_client: httpx.AsyncClient, email_address: str, json_file: bool=None, credspath: str=None):
+async def hunt(as_client: httpx.AsyncClient, email_address: str, json_file: bool=None):
     if not as_client:
         as_client = get_httpx_client()
  
-    ghunt_creds = GHuntCreds(creds_path=credspath)
-    ghunt_creds.load_creds()
-
-    if not ghunt_creds.are_creds_loaded():
-        print("[-] Creds aren't loaded. Are you logged in ?")
-
-    if not auth.check_cookies(ghunt_creds.cookies):
-        print("[-] Seems like the cookies are invalid. Exiting...")
+    ghunt_creds = await auth.load_and_auth(as_client)
 
     #gb.rc.print("[+] Target found !", style="sea_green3")
 
@@ -38,7 +31,7 @@ async def hunt(as_client: httpx.AsyncClient, email_address: str, json_file: bool
     containers = target.sourceIds
 
     if len(containers) > 1 or not "PROFILE" in containers:
-        print("\n[!] You have this person in these containers :")
+        print("[!] You have this person in these containers :")
         for container in containers:
             print(f"- {container.title()}")
 
@@ -47,7 +40,7 @@ async def hunt(as_client: httpx.AsyncClient, email_address: str, json_file: bool
 
     container = "PROFILE"
     
-    gb.rc.print("\n🙋 Google Account data\n", style="plum2")
+    gb.rc.print("🙋 Google Account data\n", style="plum2")
 
     if container in target.names:
         print(f"Name : {target.names[container].fullname}\n")
