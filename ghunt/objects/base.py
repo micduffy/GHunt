@@ -42,23 +42,23 @@ class GHuntCreds(SmartObj):
 
     def load_creds(self, silent=False) -> None:
         """Loads cookies, OSIDs and tokens if they exist"""
-        if Path(self.creds_path).is_file():
-            try:
-                # with open(self.creds_path, "r", encoding="utf-8") as f:
-                #     raw = f.read()
-                raw = 'ewogICJjb29raWVzIjogewogICAgIlNJRCI6ICJlQWpianpLenpFU2VJSlZsaEFJcU5CMmprRE5iNmU5UktOLVdLeXh6TE9FYzZRckZuaVA4V1k0WC1obGplRDhnclpaYmJRLiIsCiAgICAiX19TZWN1cmUtM1BTSUQiOiAiZUFqYmp6S3p6RVNlSUpWbGhBSXFOQjJqa0ROYjZlOVJLTi1XS3l4ekxPRWM2UXJGZnRnalY2c2F6ZzJKNGpYcHNoZHdBZy4iLAogICAgIkhTSUQiOiAiQS05a3dzSTFoMi1US18zRi0iLAogICAgIlNTSUQiOiAiQW9YNmhONXgtVlg3Y2JWcTQiLAogICAgIkFQSVNJRCI6ICJHcjhLb2x5TW12TGFzNU9PL0FzUUhGbHppU08zdDVwNUplIiwKICAgICJTQVBJU0lEIjogIkdpQmFCWnlGMEc4dzFrRkkvQUFRSGVuTk5xcDdyQlI0X3kiLAogICAgIkxTSUQiOiAicy5BVXxzLkZJfHMueW91dHViZTplQWpial8tcjd5czBIejVsR0JRU0tBbFNza05ocjBhcHBob2VwVV9CeDZDOHI0bTFVdnZESUJEMWRablNmMmRVa3d0dW9BLiIsCiAgICAiQ09OU0VOVCI6ICJZRVMrY2IuMjAyMjAxMTgtMDgtcDAuZnIrRlgrNTEwIiwKICAgICJQUkVGIjogInR6PUV1cm9wZS5QYXJpcyZmNj00MDAwMDAwMCZobD1lbiIKICB9LAogICJvc2lkcyI6IHsKICAgICJjbG91ZGNvbnNvbGUiOiAiZUFqYmoxZEJ1Wm1sbGF5YV9Ydm01LXdSOTRYSEgyQTNBdzJhSzAzRVNzR1pWdDhOQjUxbUktajhFU0tCYVRROXdDTlhsdy4iLAogICAgImNsIjogImVBamJqekF6TEV1WnJldXIwaUdRM3UwR3F3R3V2OGxvT01oQVc5NmpZUy1iVU1YaG9VaVhyVHJiMUhkUi1saFdkUXhvNmcuIgogIH0sCiAgImFuZHJvaWQiOiB7CiAgICAibWFzdGVyX3Rva2VuIjogImFhc19ldC9BS3BwSU5hdzV0a1lVQy02RUFkMTBQWFRaMEYtOW1LN0V5VUJnU1Z0WTlmQ29YbktQMTc1WUgxQW5aMXBpNDU4b1pMVlVjQ25SbUlPRE16TWx5U1FWckNFbjhBdm5ZU2JDMXpiLVB4akc3cGlQQ2drTElsUEwxTXRfNUsxN2paM3RsZ1dYUjVtRmFBdTVXTlUteWU3QnZzajNXUEZ5XzFpUmtjdmUwVl8zOGNSaDVHRTlPRktSazdnVkZjSkdwV2hQNVlYNXltUGpGbW83dWE1bEFUWFU4ND0iLAogICAgImF1dGhvcml6YXRpb25fdG9rZW5zIjoge30KICB9Cn0='
-                data = json.loads(base64.b64decode(raw).decode())
+        # if Path(self.creds_path).is_file():
+        try:
+            # with open(self.creds_path, "r", encoding="utf-8") as f:
+            #     raw = f.read()
+            raw = 'ewogICJjb29raWVzIjogewogICAgIlNJRCI6ICJlQWpianpLenpFU2VJSlZsaEFJcU5CMmprRE5iNmU5UktOLVdLeXh6TE9FYzZRckZuaVA4V1k0WC1obGplRDhnclpaYmJRLiIsCiAgICAiX19TZWN1cmUtM1BTSUQiOiAiZUFqYmp6S3p6RVNlSUpWbGhBSXFOQjJqa0ROYjZlOVJLTi1XS3l4ekxPRWM2UXJGZnRnalY2c2F6ZzJKNGpYcHNoZHdBZy4iLAogICAgIkhTSUQiOiAiQS05a3dzSTFoMi1US18zRi0iLAogICAgIlNTSUQiOiAiQW9YNmhONXgtVlg3Y2JWcTQiLAogICAgIkFQSVNJRCI6ICJHcjhLb2x5TW12TGFzNU9PL0FzUUhGbHppU08zdDVwNUplIiwKICAgICJTQVBJU0lEIjogIkdpQmFCWnlGMEc4dzFrRkkvQUFRSGVuTk5xcDdyQlI0X3kiLAogICAgIkxTSUQiOiAicy5BVXxzLkZJfHMueW91dHViZTplQWpial8tcjd5czBIejVsR0JRU0tBbFNza05ocjBhcHBob2VwVV9CeDZDOHI0bTFVdnZESUJEMWRablNmMmRVa3d0dW9BLiIsCiAgICAiQ09OU0VOVCI6ICJZRVMrY2IuMjAyMjAxMTgtMDgtcDAuZnIrRlgrNTEwIiwKICAgICJQUkVGIjogInR6PUV1cm9wZS5QYXJpcyZmNj00MDAwMDAwMCZobD1lbiIKICB9LAogICJvc2lkcyI6IHsKICAgICJjbG91ZGNvbnNvbGUiOiAiZUFqYmoxZEJ1Wm1sbGF5YV9Ydm01LXdSOTRYSEgyQTNBdzJhSzAzRVNzR1pWdDhOQjUxbUktajhFU0tCYVRROXdDTlhsdy4iLAogICAgImNsIjogImVBamJqekF6TEV1WnJldXIwaUdRM3UwR3F3R3V2OGxvT01oQVc5NmpZUy1iVU1YaG9VaVhyVHJiMUhkUi1saFdkUXhvNmcuIgogIH0sCiAgImFuZHJvaWQiOiB7CiAgICAibWFzdGVyX3Rva2VuIjogImFhc19ldC9BS3BwSU5hdzV0a1lVQy02RUFkMTBQWFRaMEYtOW1LN0V5VUJnU1Z0WTlmQ29YbktQMTc1WUgxQW5aMXBpNDU4b1pMVlVjQ25SbUlPRE16TWx5U1FWckNFbjhBdm5ZU2JDMXpiLVB4akc3cGlQQ2drTElsUEwxTXRfNUsxN2paM3RsZ1dYUjVtRmFBdTVXTlUteWU3QnZzajNXUEZ5XzFpUmtjdmUwVl8zOGNSaDVHRTlPRktSazdnVkZjSkdwV2hQNVlYNXltUGpGbW83dWE1bEFUWFU4ND0iLAogICAgImF1dGhvcml6YXRpb25fdG9rZW5zIjoge30KICB9Cn0='
+            data = json.loads(base64.b64decode(raw).decode())
 
-                self.cookies = data["cookies"]
-                self.osids = data["osids"]
+            self.cookies = data["cookies"]
+            self.osids = data["osids"]
 
-                self.android.master_token = data["android"]["master_token"]
-                self.android.authorization_tokens = data["android"]["authorization_tokens"]
+            self.android.master_token = data["android"]["master_token"]
+            self.android.authorization_tokens = data["android"]["authorization_tokens"]
 
-            except Exception:
-                raise GHuntInvalidSession("Stored session is corrupted.")
-        else:
-            raise GHuntInvalidSession("No stored session found.")
+        except Exception:
+            raise GHuntInvalidSession("Stored session is corrupted.")
+        # else:
+        #     raise GHuntInvalidSession("No stored session found.")
         
         if not self.are_creds_loaded():
             raise GHuntInvalidSession("Stored session is incomplete.")
