@@ -67,20 +67,23 @@ class GHuntCreds(SmartObj):
 
     def save_creds(self, silent=False):
         """Save cookies, OSIDs and tokens to the specified file."""
-        data = {
-            "cookies": self.cookies,
-            "osids": self.osids,
-            "android": {
-                "master_token": self.android.master_token,
-                "authorization_tokens": self.android.authorization_tokens
+        try:
+            data = {
+                "cookies": self.cookies,
+                "osids": self.osids,
+                "android": {
+                    "master_token": self.android.master_token,
+                    "authorization_tokens": self.android.authorization_tokens
+                }
             }
-        }
 
-        with open(self.creds_path, "w", encoding="utf-8") as f:
-            f.write(base64.b64encode(json.dumps(data, indent=2).encode()).decode())
+            with open(self.creds_path, "w", encoding="utf-8") as f:
+                f.write(base64.b64encode(json.dumps(data, indent=2).encode()).decode())
 
-        if not silent:
-            print(f"\n[+] Creds have been saved in {self.creds_path} !")
+            if not silent:
+                print(f"\n[+] Creds have been saved in {self.creds_path} !")
+        except Exception as e:
+            print(f"\n[!] Error while saving")
 
 ### Maps
 
