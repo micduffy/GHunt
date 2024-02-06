@@ -84,21 +84,23 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
                     if not reviews_data:
                         break
                     for review_data in reviews_data:
+
                         review = MapsReview()
-                        review.id = review_data[0][10]
-                        review.approximative_date = get_datetime(review_data[0][1]) # UTC
-                        review.comment = review_data[0][3]
-                        review.rating = review_data[0][4]
-                        if len(review_data[0]) >= 50 and review_data[0][49]:
-                            guided_data = review_data[0][49]
-                            for guided_section in guided_data:
-                                if not guided_section[2]:
-                                    continue
-                                guided = MapsGuidedAnswer()
-                                guided.id = guided_section[0][0]
-                                guided.question = guided_section[1]
-                                guided.answer = guided_section[2][0][0][1]
-                                review.guided_answers.append(guided)
+                        if review_data[0]:
+                            review.id = review_data[0][10]
+                            review.approximative_date = get_datetime(review_data[0][1]) # UTC
+                            review.comment = review_data[0][3]
+                            review.rating = review_data[0][4]
+                            if len(review_data[0]) >= 50 and review_data[0][49]:
+                                guided_data = review_data[0][49]
+                                for guided_section in guided_data:
+                                    if not guided_section[2]:
+                                        continue
+                                    guided = MapsGuidedAnswer()
+                                    guided.id = guided_section[0][0]
+                                    guided.question = guided_section[1]
+                                    guided.answer = guided_section[2][0][0][1]
+                                    review.guided_answers.append(guided)
 
                         review.location.id = review_data[1][14][0]
                         review.location.name = review_data[1][2]
