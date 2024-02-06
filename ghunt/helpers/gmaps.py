@@ -227,18 +227,18 @@ def calculate_probable_location(geolocator: Nominatim, reviews_and_photos: List[
         if review.location.id not in locations:
             locations[review.location.id] = {"dates": [], "locations": [], "range": None, "score": 0}
         location = (review.location.position.latitude, review.location.position.longitude)
-        for review2 in reviews_and_photos:
-            location2 = (review2.location.position.latitude, review2.location.position.longitude)
-            dis = distance.distance(location, location2).km
-
-            if dis <= radius:
-                locations[review.location.id]["dates"].append(review2.approximative_date)
-                locations[review.location.id]["locations"].append(location2)
-
-        maxdate = max(locations[review.location.id]["dates"])
-        mindate = min(locations[review.location.id]["dates"])
-        locations[review.location.id]["range"] = maxdate - mindate
-        tmprinter.out(f"Calculation of the distance of each review ({nb}/{len(reviews_and_photos)})...")
+        # for review2 in reviews_and_photos:
+        #     location2 = (review2.location.position.latitude, review2.location.position.longitude)
+        #     dis = distance.distance(location, location2).km
+        #
+        #     if dis <= radius:
+        #         locations[review.location.id]["dates"].append(review2.approximative_date)
+        #         locations[review.location.id]["locations"].append(location2)
+        #
+        # maxdate = max(locations[review.location.id]["dates"])
+        # mindate = min(locations[review.location.id]["dates"])
+        # locations[review.location.id]["range"] = maxdate - mindate
+        # tmprinter.out(f"Calculation of the distance of each review ({nb}/{len(reviews_and_photos)})...")
 
     tmprinter.clear()
 
