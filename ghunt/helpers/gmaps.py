@@ -84,23 +84,12 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
                     if not reviews_data:
                         break
                     for review_data in reviews_data:
-
                         review = MapsReview()
-                        if review_data[0]:
-                            review.id = review_data[0][10]
-                            review.approximative_date = get_datetime(review_data[0][1]) # UTC
-                            review.comment = review_data[0][3]
-                            review.rating = review_data[0][4]
-                            if len(review_data[0]) >= 50 and review_data[0][49]:
-                                guided_data = review_data[0][49]
-                                for guided_section in guided_data:
-                                    if not guided_section[2]:
-                                        continue
-                                    guided = MapsGuidedAnswer()
-                                    guided.id = guided_section[0][0]
-                                    guided.question = guided_section[1]
-                                    guided.answer = guided_section[2][0][0][1]
-                                    review.guided_answers.append(guided)
+                        review.id = review_data[6][0]
+                        review.date = datetime.utcfromtimestamp(review_data[6][1][3] / 1000000)
+                        if len(review_data[6][2]) > 1 and review_data[6][2][1]:
+                            review.comment = review_data[6][2][1][0]
+                        review.rating = review_data[6][2][0][0]
 
                         review.location.id = review_data[1][14][0]
                         review.location.name = review_data[1][2]
@@ -111,7 +100,7 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
                             review.location.position.latitude = review_data[1][0][2]
                             review.location.position.longitude = review_data[1][0][3]
                         if len(review_data[1]) > 31 and review_data[1][31]:
-                            review.location.cost = len(review_data[1][31])
+                            review.location.cost_level = len(review_data[1][31])
                         new_reviews.append(review)
                         bar()
 
@@ -133,8 +122,8 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
                         photos.id = photo_data[0][10]
                         photos.url = photo_data[0][6][0].split("=")[0]
                         date = photo_data[0][21][6][8]
-                        photos.exact_date = datetime(date[0], date[1], date[2], date[3]) # UTC
-                        photos.approximative_date = get_datetime(date[8][0]) # UTC
+                        photos.date = datetime(date[0], date[1], date[2], date[3]) # UTC
+                        # photos.approximative_date = get_datetime(date[8][0]) # UTC
 
                         if len(photo_data) > 1:
                             photos.location.id = photo_data[1][14][0]
@@ -146,7 +135,7 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
                                 photos.location.position.latitude = photo_data[1][0][2]
                                 photos.location.position.longitude = photo_data[1][0][3]
                             if len(photo_data[1]) > 31 and photo_data[1][31]:
-                                photos.location.cost = len(photo_data[1][31])
+                                photos.location.cost_level = len(photo_data[1][31])
                         new_photos.append(photos)
                         bar()
 
@@ -340,8 +329,8 @@ def output(err: str, stats: Dict[str, int], reviews: List[MapsReview], photos: L
     total_costs = 0
     costs_stats = {x:0 for x in range(1,5)}
     for review in reviews_and_photos:
-        if review.location.cost:
-            costs_stats[review.location.cost] += 1
+        if review.location.cost_level:
+            costs_stats[review.location.cost_level] += 1
             total_costs += 1
     costs_stats = dict(sorted(costs_stats.items(), key=lambda item: item[1], reverse=True)) # We sort the dict by cost popularity
 
