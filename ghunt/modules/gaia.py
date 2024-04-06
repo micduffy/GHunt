@@ -20,7 +20,7 @@ async def hunt(as_client: httpx.AsyncClient, gaia_id: str, json_file: bool=None)
     #gb.rc.print("\n[+] Target found !", style="spring_green3")
 
     people_pa = PeoplePaHttp(ghunt_creds)
-    vision_api = VisionHttp(ghunt_creds)
+    # vision_api = VisionHttp(ghunt_creds)
     is_found, target = await people_pa.people(as_client, gaia_id, params_template="max_details")
     if not is_found:
         print("\n[-] The target wasn't found.")
@@ -42,8 +42,8 @@ async def hunt(as_client: httpx.AsyncClient, gaia_id: str, json_file: bool=None)
     
     gb.rc.print("🙋 Google Account data\n", style="plum2")
 
-    if container in target.names:
-        print(f"Name : {target.names[container].fullname}\n")
+    # if container in target.names:
+        # print(f"Name : {target.names[container].fullname}\n")
 
     if container in target.profilePhotos:
         if target.profilePhotos[container].isDefault:
@@ -52,7 +52,7 @@ async def hunt(as_client: httpx.AsyncClient, gaia_id: str, json_file: bool=None)
             print("[+] Custom profile picture !")
             print(f"=> {target.profilePhotos[container].url}")
             
-            await ia.detect_face(vision_api, as_client, target.profilePhotos[container].url)
+            # await ia.detect_face(vision_api, as_client, target.profilePhotos[container].url)
             print()
 
     if container in target.coverPhotos:
@@ -62,7 +62,7 @@ async def hunt(as_client: httpx.AsyncClient, gaia_id: str, json_file: bool=None)
             print("[+] Custom cover picture !")
             print(f"=> {target.coverPhotos[container].url}")
 
-            await ia.detect_face(vision_api, as_client, target.coverPhotos[container].url)
+            # await ia.detect_face(vision_api, as_client, target.coverPhotos[container].url)
             print()
 
     print(f"Last profile edit : {target.sourceIds[container].lastUpdated.strftime('%Y/%m/%d %H:%M:%S (UTC)')}\n")
