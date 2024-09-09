@@ -51,7 +51,7 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
     agg_reviews = []
     agg_photos = []
     stats = {}
-
+    print(f"https://www.google.com/locationhistory/preview/mas?authuser=0&hl=en&gl=us&pb={gb.config.templates['gmaps_pb']['stats'].format(gaia_id)}")
     req = await as_client.get(f"https://www.google.com/locationhistory/preview/mas?authuser=0&hl=en&gl=us&pb={gb.config.templates['gmaps_pb']['stats'].format(gaia_id)}")
     data = json.loads(req.text[5:])
     if not data[16][8]:
@@ -330,7 +330,7 @@ def output(err: str, stats: Dict[str, int], reviews: List[MapsReview], photos: L
     costs_stats = {x:0 for x in range(1,5)}
     for review in reviews_and_photos:
         if review.location.cost_level:
-            costs_stats[review.location.cost_level] += 1
+            costs_stats[1] += 1
             total_costs += 1
     costs_stats = dict(sorted(costs_stats.items(), key=lambda item: item[1], reverse=True)) # We sort the dict by cost popularity
 
